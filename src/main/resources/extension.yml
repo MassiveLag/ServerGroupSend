@@ -1,0 +1,6 @@
+name: ServerGroupSend
+version: ${version}
+main: com.johanneshq.servergroupsend.ServerGroupSend
+description: NetworkManager ServerGroupSend Extension
+authors: [JohannesHQ]
+api-version: 2.11.1

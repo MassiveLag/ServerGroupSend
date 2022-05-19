@@ -27,6 +27,7 @@ public class Utils {
 
         Optional<ServerGroup> optionalServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerGroupSafe(groupName);
         if (optionalServerGroup.isEmpty()) {
+            ServerGroupSend.get().getLogger().info("We are trying to sent " + player.getName() + " to the group. But the group does not exist, make sure you have defined the right group name!");
             return;
         }
 
@@ -43,6 +44,7 @@ public class Utils {
 
         Server randomServerFromServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerFromGroup(nmPlayer.get(), optionalServerGroup.get(), methodType);
         if (randomServerFromServerGroup == null) {
+            ServerGroupSend.get().getLogger().info("There is no available server found in group: " + optionalServerGroup.get().getGroupName());
             return;
         }
 

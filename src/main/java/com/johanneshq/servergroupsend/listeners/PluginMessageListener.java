@@ -30,7 +30,7 @@ public class PluginMessageListener implements Listener {
             String action = dataInputStream.readUTF();
             String target = dataInputStream.readUTF().toLowerCase();
 
-            //format: "group:SERVER:balanceMethode"
+            //format: "group:GROUP:RANDOM"
            if (action.equalsIgnoreCase("connect")) {
                ServerGroupSend.get().debug("ACTION: " + action);
                ServerGroupSend.get().debug("TARGET: " + target);

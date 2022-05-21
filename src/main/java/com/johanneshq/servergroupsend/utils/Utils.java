@@ -22,11 +22,13 @@ public class Utils {
 
         Optional<Player> nmPlayer = ServerGroupSend.get().getNetworkManager().getPlayerSafe(player.getUniqueId());
         if (nmPlayer.isEmpty()) {
+            ServerGroupSend.get().debug("nmPlayer is empty!");
             return;
         }
 
         Optional<ServerGroup> optionalServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerGroupSafe(groupName);
         if (optionalServerGroup.isEmpty()) {
+            ServerGroupSend.get().debug("optionalServerGroup is empty!");
             ServerGroupSend.get().getLogger().info("We are trying to sent " + player.getName() + " to the group. But the group does not exist, make sure you have defined the right group name!");
             return;
         }
@@ -39,11 +41,13 @@ public class Utils {
                 .filter(Server::getOnline).count();
 
         if (onlineServers <= 1) {
+            ServerGroupSend.get().debug("onlineServers=" + onlineServers);
             methodType = BalanceMethodType.RANDOM;
         }
 
         Server randomServerFromServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerFromGroup(nmPlayer.get(), optionalServerGroup.get(), methodType);
         if (randomServerFromServerGroup == null) {
+            ServerGroupSend.get().debug("randomServerFromServerGroup is null");
             ServerGroupSend.get().getLogger().info("There is no available server found in group: " + optionalServerGroup.get().getGroupName());
             return;
         }
@@ -52,6 +56,7 @@ public class Utils {
     }
 
     public static void movePlayerToServer(Player player, Server server) {
+        ServerGroupSend.get().debug("movePlayerToServer=" + player.getName() + ", server=" + server.getServerName());
         player.connect(server);
     }
 

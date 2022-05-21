@@ -36,7 +36,7 @@ public class PluginMessageListener implements Listener {
                ServerGroupSend.get().debug("TARGET: " + target);
                String[] split = target.split(":");
                if (split[0].equalsIgnoreCase("group")) {
-                   Utils.movePlayerToGroup(proxiedPlayer, split[1], parseBalanceMethod(split[2]));
+                   Utils.movePlayerToGroup(proxiedPlayer, split[1], split[2] == null ? BalanceMethodType.RANDOM : parseBalanceMethod(split[2]));
                    event.setCancelled(true);
                }
             }

@@ -1,2 +1,2 @@
-rootProject.name = "BungeeSend"
+rootProject.name = "ServerGroupSend"
 

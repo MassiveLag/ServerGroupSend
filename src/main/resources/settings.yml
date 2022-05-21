@@ -2,5 +2,5 @@
 #RANDOM_LOWEST
 #RANDOM_FILLER
 defaultBalanceMethod: "RANDOM"
-
+debug: false
 #To send a player to a server like in deluxemenus use this format: GROUPNAME:SERVER_NAME:RANDOM_LOWEST

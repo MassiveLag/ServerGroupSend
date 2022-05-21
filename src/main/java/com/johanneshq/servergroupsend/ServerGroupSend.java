@@ -4,12 +4,15 @@ import com.johanneshq.servergroupsend.config.Settings;
 import com.johanneshq.servergroupsend.listeners.PluginMessageListener;
 import nl.chimpgamer.networkmanager.api.extensions.NMExtension;
 import nl.chimpgamer.networkmanager.api.utils.PlatformType;
+import org.slf4j.Logger;
 
 public class ServerGroupSend extends NMExtension {
 
     private static ServerGroupSend eventMessages;
 
     public Settings settings = new Settings(this);
+
+    public boolean debug = get().settings.getBoolean("debug");
 
     @Override
     protected void onConfigsReload() {
@@ -36,5 +39,12 @@ public class ServerGroupSend extends NMExtension {
 
     public static ServerGroupSend get() {
         return eventMessages;
+    }
+
+    public void debug (String message) {
+        if (!debug)
+            return;
+
+        getLogger().warning("ServerGroupSend[debug]: " + message);
     }
 }

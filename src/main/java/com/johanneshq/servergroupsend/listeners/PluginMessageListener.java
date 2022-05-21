@@ -7,6 +7,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import nl.chimpgamer.networkmanager.api.models.servers.Server;
 import nl.chimpgamer.networkmanager.api.models.servers.balancer.BalanceMethodType;
 
 import java.io.ByteArrayInputStream;
@@ -31,6 +32,8 @@ public class PluginMessageListener implements Listener {
 
             //format: "group:SERVER:balanceMethode"
            if (action.equalsIgnoreCase("connect")) {
+               ServerGroupSend.get().debug("ACTION: " + action);
+               ServerGroupSend.get().debug("TARGET: " + target);
                String[] split = target.split(":");
                if (split[0].equalsIgnoreCase("group")) {
                    BalanceMethodType balanceMethodType;
@@ -50,13 +53,16 @@ public class PluginMessageListener implements Listener {
     }
 
     private BalanceMethodType parseBalanceMethod(String method) {
+        ServerGroupSend.get().debug("parseBalanceMethod: " + method);
         BalanceMethodType balanceMethodType = BalanceMethodType.RANDOM; //Default
         try {
             balanceMethodType = BalanceMethodType.valueOf(method);
         } catch (IllegalArgumentException e) {
             ServerGroupSend.get().getLogger().severe("The BalanceMethode does not exist! Method: " + method + " using the default one instead: " + balanceMethodType.name());
+            ServerGroupSend.get().debug("parseBalanceMethod Catch Type: " + balanceMethodType);
             return balanceMethodType;
         }
+        ServerGroupSend.get().debug("parseBalanceMethod Type: " + balanceMethodType);
         return balanceMethodType;
     }
 }

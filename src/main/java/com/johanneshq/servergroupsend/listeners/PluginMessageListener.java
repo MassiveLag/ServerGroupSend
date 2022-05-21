@@ -36,14 +36,7 @@ public class PluginMessageListener implements Listener {
                ServerGroupSend.get().debug("TARGET: " + target);
                String[] split = target.split(":");
                if (split[0].equalsIgnoreCase("group")) {
-                   BalanceMethodType balanceMethodType;
-                   if (split.length <= 2) {
-                       balanceMethodType = parseBalanceMethod(ServerGroupSend.get().settings.getString("defaultBalanceMethod"));
-                   } else {
-                       balanceMethodType = parseBalanceMethod(split[2]);
-                   }
-
-                   Utils.movePlayerToGroup(proxiedPlayer, split[1], balanceMethodType);
+                   Utils.movePlayerToGroup(proxiedPlayer, split[1], parseBalanceMethod(split[2]));
                    event.setCancelled(true);
                }
             }

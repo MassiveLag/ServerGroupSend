@@ -35,9 +35,9 @@ public class PluginMessageListener implements Listener {
                if (split[0].equalsIgnoreCase("group")) {
                    BalanceMethodType balanceMethodType;
                    if (split.length <= 2) {
-                       balanceMethodType = BalanceMethodType.valueOf(ServerGroupSend.get().settings.getString("defaultBalanceMethod"));
+                       balanceMethodType = parseBalanceMethod(ServerGroupSend.get().settings.getString("defaultBalanceMethod"));
                    } else {
-                       balanceMethodType = BalanceMethodType.valueOf(split[2]);
+                       balanceMethodType = parseBalanceMethod(split[2]);
                    }
 
                    Utils.movePlayerToGroup(proxiedPlayer, split[1], balanceMethodType);
@@ -47,5 +47,16 @@ public class PluginMessageListener implements Listener {
 
         } catch (IOException e) { /* ignored */}
 
+    }
+
+    private BalanceMethodType parseBalanceMethod(String method) {
+        BalanceMethodType balanceMethodType = BalanceMethodType.RANDOM; //Default
+        try {
+            balanceMethodType = BalanceMethodType.valueOf(method);
+        } catch (IllegalArgumentException e) {
+            ServerGroupSend.get().getLogger().severe("The BalanceMethode does not exist! Method: " + method + " using the default one instead: " + balanceMethodType.name());
+            return balanceMethodType;
+        }
+        return balanceMethodType;
     }
 }

@@ -9,7 +9,7 @@ import nl.chimpgamer.networkmanager.api.utils.PlatformType;
 
 public class ServerGroupSend extends NMExtension {
 
-    private static ServerGroupSend eventMessages;
+    private static ServerGroupSend INSTANCE;
 
     public Settings settings = new Settings(this);
 
@@ -27,23 +27,23 @@ public class ServerGroupSend extends NMExtension {
 
     @Override
     protected void onEnable() {
-        eventMessages = this;
+        INSTANCE = this;
         if (networkManagerPlugin.getPlatformType() != PlatformType.BUNGEECORD) {
             getLogger().severe("This extension only works for BungeeCord");
             return;
         }
 
+        settings.reload();
+
         for (Message value : Message.values()) {
             getNetworkManager().getStorage().getDao().getLanguagesDao().insertLanguageMessage(value.getKey(), value.getMessage(), value.getVersion(), value.getPluginName());
         }
-
-        settings.reload();
 
         getNetworkManager().registerListener(new PluginMessageListener());
     }
 
     public static ServerGroupSend get() {
-        return eventMessages;
+        return INSTANCE;
     }
 
     public void debug (String message) {

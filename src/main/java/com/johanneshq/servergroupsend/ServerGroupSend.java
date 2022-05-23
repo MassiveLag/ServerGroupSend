@@ -13,11 +13,12 @@ public class ServerGroupSend extends NMExtension {
 
     public Settings settings = new Settings(this);
 
-    public boolean debug = get().settings.getBoolean("debug");
+    public boolean debug = false;
 
     @Override
     protected void onConfigsReload() {
         settings.reload();
+        debug = settings.getBoolean("debug");
     }
 
     @Override
@@ -34,6 +35,7 @@ public class ServerGroupSend extends NMExtension {
         }
 
         settings.reload();
+        debug = settings.getBoolean("debug");
 
         for (Message value : Message.values()) {
             getNetworkManager().getStorage().getDao().getLanguagesDao().insertLanguageMessage(value.getKey(), value.getMessage(), value.getVersion(), value.getPluginName());

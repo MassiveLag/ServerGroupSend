@@ -1,18 +1,14 @@
 package com.johanneshq.servergroupsend.utils;
 
 import com.johanneshq.servergroupsend.ServerGroupSend;
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import nl.chimpgamer.networkmanager.api.models.player.Player;
 import nl.chimpgamer.networkmanager.api.models.servers.Server;
 import nl.chimpgamer.networkmanager.api.models.servers.ServerGroup;
 import nl.chimpgamer.networkmanager.api.models.servers.balancer.BalanceMethodType;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Utils {
 
@@ -31,35 +27,15 @@ public class Utils {
 
         Optional<ServerGroup> optionalServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerGroupSafe(groupName);
         if (optionalServerGroup.isEmpty()) {
-            nmPlayer.get().sendMessage(Component.text(ServerGroupSend.get().getMessage(nmPlayer.get().getLanguage().getId(), Message.GROUP_NOT_EXIST).replace("%groupname%", groupName)));
+            Message.GROUP_NOT_EXIST.send(nmPlayer.get(), Collections.singletonMap("<groupname>", groupName));
             ServerGroupSend.get().debug("optionalServerGroup is empty!");
-            return;
-        }
-
-        Stream<Server> onlineServers = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServers().values()
-                .stream().filter(server ->
-                        server.getServerGroups()
-                                .stream()
-                                .anyMatch(id -> id.getId() == optionalServerGroup.get().getId()))
-                .filter(Server::getOnline);
-
-        List<Server> serverList = onlineServers.collect(Collectors.toList());
-
-        if (serverList.size() <= 1) {
-            ServerGroupSend.get().debug("onlineServers=" + serverList.size());
-            if (serverList.get(0) == null) {
-                nmPlayer.get().sendMessage(Component.text(ServerGroupSend.get().getMessage(nmPlayer.get().getLanguage().getId(), Message.NO_AVAILABLE_SERVER).replace("%groupname%", optionalServerGroup.get().getGroupName())));
-                return;
-            }
-
-            movePlayerToServer(nmPlayer.get(), serverList.get(0));
             return;
         }
 
         Server randomServerFromServerGroup = ServerGroupSend.get().getNetworkManager().getCacheManager().getCachedServers().getServerFromGroup(nmPlayer.get(), optionalServerGroup.get(), balanceMethodType);
         if (randomServerFromServerGroup == null) {
             ServerGroupSend.get().debug("randomServerFromServerGroup is null");
-            nmPlayer.get().sendMessage(Component.text(ServerGroupSend.get().getMessage(nmPlayer.get().getLanguage().getId(), Message.NO_AVAILABLE_SERVER).replace("%groupname%", optionalServerGroup.get().getGroupName())));
+            Message.NO_AVAILABLE_SERVER.send(nmPlayer.get(), Collections.singletonMap("<groupname>", optionalServerGroup.get().getGroupName()));
             return;
         }
 
@@ -69,7 +45,7 @@ public class Utils {
     public static void movePlayerToServer(Player player, Server server) {
         ServerGroupSend.get().debug("movePlayerToServer=" + player.getName() + ", server=" + server.getServerName());
         player.connect(server);
-        player.sendMessage(Component.text(ServerGroupSend.get().getNMMessage(player.getLanguage().getId(), nl.chimpgamer.networkmanager.api.values.Message.SERVER_CONNECTING).replace("%servername%", server.getDisplayName())));
+        nl.chimpgamer.networkmanager.api.values.Message.SERVER_CONNECTING.send(player, Collections.singletonMap("%servername%", server.getDisplayName()));
     }
 
 }

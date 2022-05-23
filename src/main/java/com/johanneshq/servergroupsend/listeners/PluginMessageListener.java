@@ -27,7 +27,7 @@ public class PluginMessageListener implements Listener {
 
         try {
             String action = dataInputStream.readUTF();
-            String target = dataInputStream.readUTF().toLowerCase();
+            String target = dataInputStream.readUTF();
 
             //format: "group:GROUP:RANDOM"
            if (action.equalsIgnoreCase("connect")) {

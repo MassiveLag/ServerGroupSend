@@ -8,7 +8,10 @@ import nl.chimpgamer.networkmanager.api.models.servers.Server;
 import nl.chimpgamer.networkmanager.api.models.servers.ServerGroup;
 import nl.chimpgamer.networkmanager.api.models.servers.balancer.BalanceMethodType;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Utils {
@@ -40,15 +43,16 @@ public class Utils {
                                 .anyMatch(id -> id.getId() == optionalServerGroup.get().getId()))
                 .filter(Server::getOnline);
 
-        if (onlineServers.count() <= 1) {
-            Optional<Server> first = onlineServers.findFirst();
-            ServerGroupSend.get().debug("onlineServers=" + onlineServers.count());
-            if (first.isEmpty()) {
+        List<Server> serverList = onlineServers.collect(Collectors.toList());
+
+        if (serverList.size() <= 1) {
+            ServerGroupSend.get().debug("onlineServers=" + serverList.size());
+            if (serverList.get(0) == null) {
                 nmPlayer.get().sendMessage(Component.text(ServerGroupSend.get().getMessage(nmPlayer.get().getLanguage().getId(), Message.NO_AVAILABLE_SERVER).replace("%groupname%", optionalServerGroup.get().getGroupName())));
                 return;
             }
 
-            movePlayerToServer(nmPlayer.get(), first.get());
+            movePlayerToServer(nmPlayer.get(), serverList.get(0));
             return;
         }
 

@@ -48,13 +48,13 @@ public class PluginMessageListener implements Listener {
         ServerGroupSend.get().debug("parseBalanceMethod: " + method);
         BalanceMethodType balanceMethodType = BalanceMethodType.RANDOM; //Default
         try {
-            balanceMethodType = BalanceMethodType.valueOf(method);
+            balanceMethodType = BalanceMethodType.valueOf(method.toUpperCase());
         } catch (IllegalArgumentException e) {
-            ServerGroupSend.get().getLogger().severe("The BalanceMethode does not exist! Method: " + method + " using the default one instead: " + balanceMethodType.name());
-            ServerGroupSend.get().debug("parseBalanceMethod Catch Type: " + balanceMethodType);
+            ServerGroupSend.get().getLogger().severe("The BalanceMethode does not exist! Method: " + method.toUpperCase() + " using the default one instead: " + balanceMethodType.name());
+            ServerGroupSend.get().debug("parseBalanceMethod Catch Type: " + balanceMethodType.name());
             return balanceMethodType;
         }
-        ServerGroupSend.get().debug("parseBalanceMethod Type: " + balanceMethodType);
+        ServerGroupSend.get().debug("parseBalanceMethod Type: " + balanceMethodType.name());
         return balanceMethodType;
     }
 }

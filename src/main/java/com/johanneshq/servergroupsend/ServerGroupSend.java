@@ -49,10 +49,7 @@ public class ServerGroupSend extends NMExtension {
     }
 
     public void debug (String message) {
-        if (!debug)
-            return;
-
-        getLogger().warning("ServerGroupSend[debug]: " + message);
+        if (debug) getLogger().warning("ServerGroupSend[debug]: " + message);
     }
 
     public String getMessage(int languageId, Message message) {

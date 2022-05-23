@@ -63,7 +63,7 @@ public class ServerGroupSend extends NMExtension {
 
     public String getNMMessage(int languageId, nl.chimpgamer.networkmanager.api.values.Message message) {
         try {
-            return getNetworkManager().getCacheManager().getCachedLanguages().getMessage(1, message.getKey());
+            return getNetworkManager().getCacheManager().getCachedLanguages().getMessage(languageId, message.getKey());
         } catch ( LanguageMessageNotFoundException ex) {
             return ex.getLocalizedMessage();
         }
